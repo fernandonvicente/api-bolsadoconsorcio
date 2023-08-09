@@ -14,4 +14,5 @@ interface UserRepositoryInterface
     public function delete(string $id): void;
     public function new(CreateUserDTO $dto): stdClass;
     public function update(UpdateUserDTO $dto): stdClass|null;
+    public function getToken(string $token): stdClass|null;
 }

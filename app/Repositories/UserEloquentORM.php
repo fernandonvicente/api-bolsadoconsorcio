@@ -30,13 +30,13 @@ class UserEloquentORM implements UserRepositoryInterface
 
     public function findOne(string $id): stdClass|null
     {
-        $operator = $this->model->find($id);
+        $result = $this->model->find($id);
 
-        if (!$operator) {
+        if (!$result) {
             return null;
         }
 
-        return (object) $operator->toArray();
+        return (object) $result->toArray();
 
     }
     public function delete(string $id): void
@@ -47,26 +47,42 @@ class UserEloquentORM implements UserRepositoryInterface
     public function new(CreateUserDTO $dto): stdClass
     {
 
-        $operator = $this->model->create(
+        $result = $this->model->create(
             (array) $dto
         );
 
-        return (object) $operator->toArray();
+        return (object) $result->toArray();
     }
 
     public function update(UpdateUserDTO $dto): stdClass|null
     {
-        if (!$operator = $this->model->find($dto->id)) {
+        if (!$result = $this->model->find($dto->id)) {
             return null;
         }
 
-        $operator->update(
+        $result->update(
             (array) $dto
         );
 
-        return (object) $operator->toArray();
+        return (object) $result->toArray();
 
+    }
 
+    public function getToken(string $token): stdClass|null
+    {
+        $result = $this->model
+                ->where(function ($query) use ($token) {
+                    if ($token) {
+                        $query->where('token', $token);
+                    }
+                })
+                ->first();
+
+        if (!$result) {
+            return null;
+        }
+
+        return (object) $result->toArray();
 
     }
 }

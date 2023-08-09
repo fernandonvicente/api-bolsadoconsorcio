@@ -12,11 +12,18 @@ use App\Services\QuotaCanceledService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+use App\Http\Controllers\Api\UserController;
+
 class QuotaCanceledController extends Controller
 {
+    private $userController;
+
     public function __construct(
         protected QuotaCanceledService $service,
-    ) {}
+        UserController $userController
+    ) {
+        $this->userController = $userController;
+    }
 
     /**
      * Display a listing of the resource.
@@ -37,6 +44,14 @@ class QuotaCanceledController extends Controller
      */
     public function store(StoreUpdateQuotaCanceled $request)
     {
+
+        // $token = $request->headers->get('token') ? $request->headers->get('token') : $request->get('token');
+        // $user = $this->userController->getToken($token);
+
+        //duvida?
+        // como fazer para $request->user_id receber $user->id;
+        //para não alterar o que está no CreateQuotaCanceledDTO ou terá que alterar???
+
         $object = $this->service->new(
             CreateQuotaCanceledDTO::makeFromRequest($request)
         );

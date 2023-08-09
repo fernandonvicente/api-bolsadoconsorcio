@@ -51,4 +51,9 @@ class UserService
         $this->repository->delete($id);
     }
 
+    public function getToken(string $token): stdClass|null
+    {
+        return $this->repository->getToken($token);
+    }
+
 }

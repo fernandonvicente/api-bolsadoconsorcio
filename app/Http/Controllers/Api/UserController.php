@@ -23,13 +23,13 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $operators = $this->service->paginate(
+        $results = $this->service->paginate(
             page: $request->get('page', 1),
             totalPerPage: $request->get('per_page', 15),
             filter: $request->filter,
         );
 
-        return ApiAdapter::toJson($operators);
+        return ApiAdapter::toJson($results);
     }
 
     /**
@@ -37,11 +37,11 @@ class UserController extends Controller
      */
     public function store(StoreUpdateUser $request)
     {
-        $operator = $this->service->new(
+        $result = $this->service->new(
             CreateUserDTO::makeFromRequest($request)
         );
 
-        return new UserResource($operator);
+        return new UserResource($result);
     }
 
     /**
@@ -49,13 +49,13 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        if (!$operator = $this->service->findOne($id)) {
+        if (!$result = $this->service->findOne($id)) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_NOT_FOUND);
         }
 
-        return new UserResource($operator);
+        return new UserResource($result);
     }
 
     /**
@@ -63,17 +63,17 @@ class UserController extends Controller
      */
     public function update(StoreUpdateUser $request, string $id)
     {
-        $operator = $this->service->update(
+        $result = $this->service->update(
             UpdateUserDTO::makeFromRequest($request, $id)
         );
 
-        if (!$operator) {
+        if (!$result) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_NOT_FOUND);
         }
 
-        return new UserResource($operator);
+        return new UserResource($result);
     }
 
     /**
@@ -90,5 +90,16 @@ class UserController extends Controller
         $this->service->delete($id);
 
         return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
+    public function getToken(string $token)
+    {
+        if (!$result = $this->service->getToken($token)) {
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return new UserResource($result);
     }
 }
