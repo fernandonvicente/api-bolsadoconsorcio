@@ -27,7 +27,7 @@ class CreateQuotaCanceledDTO
     public static function makeFromRequest(StoreUpdateQuotaCanceled $request): self
     {
         return new self(
-            $request->user_id,
+            $request->user()->id,
             $request->customer_canceled_id,
             $request->administrator_id,
             $request->cli_old_id,

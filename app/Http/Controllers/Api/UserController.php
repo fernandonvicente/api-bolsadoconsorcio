@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Adapters\ApiAdapter;
+use App\DTO\RoleUsers\CreateRoleUserDTO;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\UpdateUserDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\RoleUserController;
 use App\Http\Requests\StoreUpdateUser;
 use App\Http\Resources\UserResource;
+use App\Services\RoleUserService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -16,6 +19,8 @@ class UserController extends Controller
 {
     public function __construct(
         protected UserService $service,
+        protected RoleUserService $serviceRoleUser,
+        protected RoleUserController $roleUserController,
     ) {}
 
     /**
@@ -40,6 +45,19 @@ class UserController extends Controller
         $result = $this->service->new(
             CreateUserDTO::makeFromRequest($request)
         );
+
+        // TENTATIVA 1
+        // $request2 = new Request([
+        //     'role_id'   => 2, //cliente cancelado
+        //     'user_id' => 2 //$user->id,
+        // ]);
+
+        // $objectRoleUser = $this->serviceRoleUser->new(
+        //     CreateRoleUserDTO::makeFromRequest($request2)
+        // );
+
+        // TENTATIVA 2
+        // $serviceRoleUser->store(StoreUpdateRoleUser $request2);
 
         return new UserResource($result);
     }

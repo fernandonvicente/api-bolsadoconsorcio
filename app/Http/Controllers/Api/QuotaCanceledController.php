@@ -44,13 +44,9 @@ class QuotaCanceledController extends Controller
      */
     public function store(StoreUpdateQuotaCanceled $request)
     {
+        // $user =  $request->user();
 
-        // $token = $request->headers->get('token') ? $request->headers->get('token') : $request->get('token');
-        // $user = $this->userController->getToken($token);
-
-        //duvida?
-        // como fazer para $request->user_id receber $user->id;
-        //para não alterar o que está no CreateQuotaCanceledDTO ou terá que alterar???
+        // $request->user_id receber $user->id;
 
         $object = $this->service->new(
             CreateQuotaCanceledDTO::makeFromRequest($request)
